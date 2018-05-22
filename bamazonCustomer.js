@@ -26,6 +26,7 @@ connection.connect(function (err) {
 function displayProducts() {
     connection.query("SELECT * FROM bamazon.products", function (err, results) {
         if (err) throw err;
+        
         //console.log(results);
         inquirer.prompt([
             {
@@ -33,17 +34,11 @@ function displayProducts() {
             type: "list",
             choices: function() {
             var choiceArray = [];
-          
-          
             for (var i = 0; i < results.length; i++) {
-            var items = results[i].product_name;
-            var itemPrices = JSON.stringify(results[i].price)
-            
-            choiceArray.push(results[i].product_name);
-            
-            
+        
+              choiceArray.push(results[i].product_name );
             }
-           return choiceArray;
+            return choiceArray;
           },
           message: "What product would you like to buy?"
         },
@@ -69,8 +64,7 @@ function displayProducts() {
            // console.log("Stock " + chosenItem.stock_quantity);
             //console.log("Buy amount " + answer.quantity);
             //console.log("new stock " +updateStock);
-
-            console.log("chosenItem " + chosenItem.product_name);
+            //console.log("chosenItem " + chosenItem.product_name);
 
             connection.query(
                "UPDATE products SET ? WHERE ? ",
@@ -119,7 +113,7 @@ function displayProducts() {
             }
             ]).then(function(confirm){
                 //console.log(confirm)
-                if (confirm.redo===false){
+                if (confirm.redo === true){
                     displayProducts();
                 }
                 else {
